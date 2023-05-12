@@ -14,7 +14,8 @@ import numpy as np
 import pytorch_lightning as pl
 import matplotlib.pyplot as plt
 from pytorch_lightning.callbacks import TQDMProgressBar as bar
-import LSTM_Net as lstm
+import StockPriceRetrieval as spr
+
 
 use_gpu = False
 device = torch.device('cpu')
@@ -24,59 +25,14 @@ if torch.cuda.is_available():
 
 #%% Retrieve Stock Data 
 predict_stock='msft'
-feature_stocks=[predict_stock, 'tsla','meta','sony','amzn','nflx','gbtc','gdx','intc','dal',
-                'c','goog','aapl','msft','ibm','hp','orcl','sap','crm','hubs','twlo']
+#feature_stocks=[predict_stock, 'tsla','meta','sony','amzn','nflx','gbtc','gdx','intc','dal',
+#                'c','goog','aapl','msft','ibm','hp','orcl','sap','crm','hubs','twlo']
+feature_stocks=[predict_stock, 'tsla']
 n_features = len(feature_stocks)-1
-x_file_path = 'x_data.csv'
-y_file_path = 'y_data_next_day.csv'
-y_same_file_path = 'y_data_same_day.csv'
 
-X = np.genfromtxt(x_file_path, delimiter=',', dtype=float)
-X = X.astype(np.float32)
-Y = np.genfromtxt(y_file_path, delimiter=',', dtype=float) # use this for next day prediction training
-#Y = np.genfromtxt(y_same_file_path, delimiter=',', dtype=float) # use this for same day prediction training
-Y = Y.astype(np.float32)
-_, y_min, y_max = tu.min_max_scale(Y, axis=0) # scale the target data
-#%% Create dataloaders
+#%% 
+print('This model is designed to predict "', predict_stock.upper(), '" prices with 30 days of historical data as input.')
 days = 30 # The model was trained using 30 days of previous data 
-
-
-#%% Load model(s) to query
-teacher_model = torch.load('Trained_Model.pt')
-teacher_model.to(device=device)
-teacher_model.eval()
-student_model = torch.load('Trained_Student_Model.pt')
-student_model.eval()
-student_model.to(device=device)
-
-student_preds = [] # list to hold the price predictions of the student model
-teacher_preds = [] # list to hold the price predictions of the teacher model
-actual_prices = [] # list to hold the true price points
-
-for input, target in test_dataloader:
-    input = input.permute(2,0,1) # change shape to (sequence_length, batch_size, n_features)
-    student_out = student_model(input)
-    teacher_out = teacher_model(input)
-    student_preds.append(student_out)
-    teacher_preds.append(teacher_out)
-    actual_prices.append(target)
-
-teacher_data = tu.np_get_tensor_list(teacher_preds)
-teacher_data = tu.min_max_undo(teacher_data, y_min, y_max)
-student_data = tu.np_get_tensor_list(student_preds)
-student_data = tu.min_max_undo(student_data, y_min, y_max)
-actual = tu.np_get_tensor_list(actual_prices)
-
-#final_train = tu.min_max_undo(final_train, y_min, y_max)
-
-#%% Plot Prices
-n_days = 30
-Days = np.linspace(1, len(actual[-1*n_days:-1]), len(actual[-1*n_days:-1]))
-plt.plot(Days, actual[-1*n_days:-1], label='Actual Stock Price')
-plt.plot(Days, teacher_data[-1*n_days:-1], label='Teacher Model Predicted Stock Price')
-plt.plot(Days, student_data[-1*n_days:-1], label='Student Model Predicted Stock Price')
-plt.xlabel('Days')
-plt.ylabel('Stock Price')
-plt.title('Actual and Predicted Stock Prices')
-plt.legend()
-plt.show()
+input_data = spr.get_days_of_data(predict_date='2023-05-10', feature_stocks=feature_stocks, days=days)
+test = spr.get_prices(tickers=feature_stocks,start='2023-03-28',end='2023-05-10')
+#%%
