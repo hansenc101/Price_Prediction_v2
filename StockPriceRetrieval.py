@@ -7,7 +7,7 @@ Created on Sat Mar 25 10:14:31 2023
 
 import yfinance as yf
 import pandas as pd
-from numpy import concatenate as concat
+import numpy as np
 
 def get_price(tick,start='2021-10-01',end=None):
     return yf.Ticker(tick).history(start=start,end=end)['Close']
@@ -28,5 +28,10 @@ def get_days_of_data(predict_date, feature_stocks, days=30): # NEEDS FIXED
         start_date = end_date - pd.DateOffset(days=days-len(input_data))
         temp = get_prices(tickers=feature_stocks, start=start_date.strftime('%Y-%m-%d')
                                     , end=end_date.strftime('%Y-%m-%d'))
-        input_data = concat((temp, input_data))
+        input_data = np.concatenate((temp, input_data))
+    
+    #Y = input_data[:,0]
+    #y_min = np.min(Y)
+    #y_max = np.max(Y)
+    
     return input_data

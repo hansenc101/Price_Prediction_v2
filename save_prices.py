@@ -18,7 +18,7 @@ feature_stocks=[predict_stock, 'tsla','meta','sony','amzn','nflx','gbtc','gdx','
                 'c','goog','aapl','msft','ibm','hp','orcl','sap','crm','hubs','twlo']
 n_features = len(feature_stocks)-1
 
-start = '2018-01-01'
+start = '2015-01-01'
 
 # getting data
 print('Retrieving stock data...')

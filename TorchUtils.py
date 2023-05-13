@@ -16,6 +16,7 @@ import pytorch_lightning as pl
 from torch.utils.data import DataLoader,Dataset
 import torch.utils.data as data
 import numpy as np
+from datetime import datetime
 
 
 def min_max_scale(x, axis=1):
@@ -42,6 +43,17 @@ def np_get_tensor_list(tensor_list):
             data = np.concatenate((data, temp))
     return data
 
+
+def get_training_scale():
+    y_file_path = 'y_data_next_day.csv'
+    Y = np.genfromtxt(y_file_path, delimiter=',', dtype=float)
+    Y = Y.astype(np.float32)
+
+    #% Scale the input data using min/max scaling, by each feature
+    _, y_min, y_max = min_max_scale(Y, axis=0) # scale the target data
+    return y_min, y_max
+
+
 class StockDataset(Dataset):
     def __init__(self,X,Y,days): # X and Y must be np.array() types
         self.X = X # 100
@@ -62,9 +74,10 @@ class StockDataModule(pl.LightningDataModule):
         train_set_size = int(len(stockData)*0.7)
         valid_set_size = int(len(stockData)*0.15)
         test_set_size = len(stockData)-train_set_size-valid_set_size
-
+        time = datetime.now().time()
+        seed = int(time.strftime("%H%M%S"))
         self.train_set, self.valid_set, self.test_set = data.random_split(stockData,[train_set_size,valid_set_size,test_set_size],\
-                                                      generator=torch.Generator().manual_seed(42))  
+                                                      generator=torch.Generator().manual_seed(seed))  
         if batch_size==0:
             self.batch_size = test_set_size # use entire dataset as batch
         else:
