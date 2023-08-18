@@ -3,7 +3,8 @@
 """
 Created on Wed May  3 12:39:45 2023
 
-@author: chris
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 
 This file will simply save the stock prices in a csv and store them so that they 
 can be retrieved later without internet access. 
