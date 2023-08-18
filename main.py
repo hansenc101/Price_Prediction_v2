@@ -2,12 +2,8 @@
 """
 Created on Mon Apr 24 18:58:52 2023
 
-@author: hanse
-"""
-
-"""
-Christopher Hansen
-Artificial Neural Networks
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 """
 
 import torch
