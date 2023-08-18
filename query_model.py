@@ -3,7 +3,8 @@
 """
 Created on Fri May  5 21:24:09 2023
 
-@author: chris
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 """
 
 import torch
