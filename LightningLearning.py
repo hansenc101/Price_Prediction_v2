@@ -2,13 +2,8 @@
 """
 Created on Sat Mar 25 12:11:48 2023
 
-@author: hanse
-"""
-
-"""
-1a. Create a subclass of pytorch_lightning.LightningModule. It should include 
-__init__, training_step, validation_step, configure_optimizers in the class. 
-(6 points)
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 
 """
 import torch
