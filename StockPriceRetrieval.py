@@ -2,7 +2,8 @@
 """
 Created on Sat Mar 25 10:14:31 2023
 
-@author: hanse
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 """
 
 import yfinance as yf
