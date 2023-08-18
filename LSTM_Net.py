@@ -2,7 +2,8 @@
 """
 Created on Mon Apr 24 21:08:53 2023
 
-@author: hanse
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 """
 
 import torch
