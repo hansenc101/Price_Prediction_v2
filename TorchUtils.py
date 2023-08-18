@@ -2,12 +2,8 @@
 """
 Created on Sat Mar 25 10:23:13 2023
 
-@author: hanse
-"""
-
-"""
-1b. Create a subclass of pytorch_lightning.LightningDataModule. It should 
-include __init__, train_dataloader, and val_dataloader in the class. (4 points)
+@author: Christopher Hansen
+email: hansenc101@gmail.com
 
 """
 
