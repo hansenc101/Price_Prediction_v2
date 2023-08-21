@@ -3,6 +3,7 @@
 Created on Sun Feb 26 17:35:52 2023
 
 @author: Christopher Hansen
+email: hansenc101@gmail.com
 """
 import torch
 import torch.nn.functional as F
